@@ -1,9 +1,15 @@
 import argparse
-import csv
 import json
 import os
+import sys
+import pandas as pd
 from typing import Dict
 from typing import List
+
+file_dir = os.path.dirname(__file__)
+base_dir = os.path.dirname(file_dir)
+
+sys.path.append(base_dir)
 
 from fake_news.utils.features import normalize_and_clean
 
@@ -18,8 +24,10 @@ def read_args():
 
 
 def read_datapoints(datapath: str) -> List[Dict]:
-    with open(datapath) as f:
-        reader = csv.DictReader(f, delimiter="\t", fieldnames=[
+    df = pd.read_csv(
+        datapath,
+        delimiter="\t",
+        names=[
             "id",
             "statement_json",
             "label",
@@ -36,8 +44,19 @@ def read_datapoints(datapath: str) -> List[Dict]:
             "pants_fire_count",
             "context",
             "justification"
-        ])
-        return [row for row in reader]
+        ]
+    )
+    
+    df_clean = df[
+        df.id.notna()
+        & df.label.notna()
+        & df.state_info.notna()
+        & df.subject.notna()
+        & df.speaker.notna()
+        & df.speaker_title.notna()
+    ]
+
+    return df_clean.to_dict('records')
 
 
 if __name__ == "__main__":
@@ -45,16 +64,16 @@ if __name__ == "__main__":
     train_datapoints = read_datapoints(args.train_data_path)
     val_datapoints = read_datapoints(args.val_data_path)
     test_datapoints = read_datapoints(args.test_data_path)
-    
+
     train_datapoints = normalize_and_clean(train_datapoints)
     val_datapoints = normalize_and_clean(val_datapoints)
     test_datapoints = normalize_and_clean(test_datapoints)
-    
+
     with open(os.path.join(args.output_dir, "cleaned_train_data.json"), "w") as f:
         json.dump(train_datapoints, f)
-    
+
     with open(os.path.join(args.output_dir, "cleaned_val_data.json"), "w") as f:
         json.dump(val_datapoints, f)
-    
+
     with open(os.path.join(args.output_dir, "cleaned_test_data.json"), "w") as f:
         json.dump(test_datapoints, f)
