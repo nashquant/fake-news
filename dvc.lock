@@ -5,11 +5,12 @@ stages:
       --output-path data/processed/optimal_credit_bins.json
     deps:
     - path: data/processed/cleaned_train_data.json
-      md5: c6b22922ea499ac5ca97c57602694c45
-      size: 9812841
+      md5: b73435dfc8b0e47a4bf5b1fa50d79e79
+      size: 6573355
     outs:
     - path: data/processed/optimal_credit_bins.json
-      md5: b9c23dc2b9b202e57e0beb8743b06e1c
+      md5: dd2056922bd6912286adab54faba97c2
+      size: 547
   normalize-and-clean-data:
     cmd: python scripts/normalize_and_clean_data.py --train-data-path data/raw/train2.tsv
       --val-data-path data/raw/val2.tsv --test-data-path data/raw/test2.tsv --output-dir
@@ -42,26 +43,26 @@ stages:
     deps:
     - path: config/random_forest.json
       md5: e6588835c57f6f3b96e4198904c32a79
-      size: 441
+      size: 454
     - path: data/processed/cleaned_test_data.json
-      md5: aab533912d8d90b3b0db2c0aae63d370
-      size: 1237984
+      md5: 1b6bed2affa2e07dd703fee902ecad6a
+      size: 845488
     - path: data/processed/cleaned_train_data.json
-      md5: c6b22922ea499ac5ca97c57602694c45
-      size: 9812841
+      md5: b73435dfc8b0e47a4bf5b1fa50d79e79
+      size: 6573355
     - path: data/processed/cleaned_val_data.json
-      md5: 13fdb7e089cd6268ff91ede65dd226f0
-      size: 1232040
+      md5: 0245a1951708a4b95a64c58eb178e298
+      size: 841928
     - path: data/processed/optimal_credit_bins.json
-      md5: b9c23dc2b9b202e57e0beb8743b06e1c
-      size: 507
+      md5: dd2056922bd6912286adab54faba97c2
+      size: 547
     - path: fake_news/train.py
-      md5: 5e1c3f1da43fb525717c2a42d518eae8
-      size: 3026
+      md5: dc89a03fb6780683d03a8be07434b963
+      size: 3419
     outs:
     - path: model_checkpoints/random_forest
-      md5: 04641316120a63366e21064e69ed2d0f.dir
-      size: 51071944
+      md5: 9c6843b1c54a44d84a0365f63d1452ea.dir
+      size: 33367922
       nfiles: 5
   train-roberta:
     cmd: python fake_news/train.py --config-file config/roberta.json
