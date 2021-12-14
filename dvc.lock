@@ -61,8 +61,8 @@ stages:
       size: 3419
     outs:
     - path: model_checkpoints/random_forest
-      md5: 9c6843b1c54a44d84a0365f63d1452ea.dir
-      size: 33367922
+      md5: 836aa9dfe492330c633d58f150a90ec9.dir
+      size: 33367940
       nfiles: 5
   train-roberta:
     cmd: python fake_news/train.py --config-file config/roberta.json
